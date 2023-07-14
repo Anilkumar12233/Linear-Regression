@@ -122,20 +122,23 @@ rsquared <- summary(model)$r.squared
 cat("RMSE:", rmse, "\n")
 cat("R-squared:", rsquared, "\n")
 
-# Visualize the relationship between "TV" and "Sales"
-p1 <- ggplot(subset_data, aes(x = TV, y = Sales)) +
-  geom_point(color = "darkblue") +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red") +
-  labs(title = "Relationship between TV and Sales") +
-  theme_bw()
 
-p2 <- ggplot(train_data, aes(x = Sales, y = residuals(model))) +
-  geom_point(color = "darkblue") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  labs(title = "Residuals vs. Sales") +
-  theme_bw()
+# Create a data frame for plotting
+plot_data <- data.frame(Actual = test_data$Sales, Predicted = predictions)
 
-grid.arrange(p1, p2, nrow = 2)
+# Create a scatter plot of predicted vs actual values
+scatter_plot <- ggplot(plot_data, aes(x = Actual, y = Predicted)) +
+  geom_point(size = 3, color = "#4C72B0", alpha = 0.8) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "#DD0000") +
+  labs(x = "Actual Sales", y = "Predicted Sales") +
+  theme_bw() +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "none")
+
+# Display the scatter plot
+print(scatter_plot)
 
 
 
